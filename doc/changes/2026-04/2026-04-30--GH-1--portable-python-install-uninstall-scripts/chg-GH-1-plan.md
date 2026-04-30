@@ -278,7 +278,7 @@ Key design decisions already resolved:
 
 **Tasks**:
 
-- [ ] **5.1** Create `scripts/uninstall.py` — main entry-point:
+- [x] **5.1** Create `scripts/uninstall.py` — main entry-point:
   - Shebang: `#!/usr/bin/env python3`
   - `confirm_action(message, config) -> bool` — returns `True` immediately when `config.force` or `config.dry_run`
   - `do_global_uninstall(config)`:
@@ -475,6 +475,6 @@ Key design decisions already resolved:
 | 2     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add file_ops, gitignore, safety modules to ados_lib | 24 pass, 1 skip (symlink/Win) |
 | 3     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add git_ops module to ados_lib | 11 tests PASS; zero shell=True |
 | 4     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add portable install.py with full CLI parity | 4 tests PASS |
-| 5     | —      |         |           |        |       |
+| 5     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add portable uninstall.py with full CLI parity | 4 tests PASS |
 | 6     | —      |         |           |        |       |
 | 7     | —      |         |           |        |       |
