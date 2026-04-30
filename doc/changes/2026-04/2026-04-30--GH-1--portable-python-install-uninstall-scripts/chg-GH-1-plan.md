@@ -369,19 +369,19 @@ Key design decisions already resolved:
 
 **Tasks**:
 
-- [ ] **7.1** Create `scripts/bootstrap.py` — standalone one-liner entry-point (~30 lines, no `import ados_lib`):
+- [x] **7.1** Create `scripts/bootstrap.py` — standalone one-liner entry-point (~50 lines, no `import ados_lib`):
   - Clone repo to `~/.ados/repo` using `subprocess.run(["git", "clone", ...])` directly
   - `sys.exit` with clear message if git not found (`shutil.which("git")`)
   - Exec `install.py --global` from the cloned repo via `subprocess.run`
-- [ ] **7.2** Update `README.md` — installation section:
+- [x] **7.2** Update `README.md` — installation section:
   - Linux/macOS one-liner: `curl -fsSL https://raw.githubusercontent.com/juliusz-cwiakalski/agentic-delivery-os/main/scripts/bootstrap.py | python3 -`
   - Windows PowerShell: `irm https://raw.githubusercontent.com/juliusz-cwiakalski/agentic-delivery-os/main/scripts/bootstrap.py | python -`
   - Note: Python ≥ 3.8 required
   - Note: Bash variants remain available as fallback
-- [ ] **7.3** Update `doc/guides/system-dependencies.md`:
+- [x] **7.3** Update `doc/guides/system-dependencies.md`:
   - Add Python 3.8+ as a system dependency
   - Add install instructions for each platform (Windows: python.org or Store; Linux: distro package manager; macOS: Homebrew or python.org)
-- [ ] **7.4** Add deprecation comments to `scripts/install.sh` and `scripts/uninstall.sh`:
+- [x] **7.4** Add deprecation comments to `scripts/install.sh` and `scripts/uninstall.sh`:
   - Line 1 comment: `# DEPRECATED: Use scripts/install.py for cross-platform support. This Bash version will be removed in a future release.`
 - [ ] **7.5** Verify one-liner manually on Linux and macOS; document result in Execution Log
 
@@ -477,4 +477,4 @@ Key design decisions already resolved:
 | 4     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add portable install.py with full CLI parity | 4 tests PASS |
 | 5     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add portable uninstall.py with full CLI parity | 4 tests PASS |
 | 6     | DONE   | 2026-04-30 | 2026-04-30 | test(GH-1): add cross-platform integration test suite for Python install scripts | 62 pass, 1 skip (symlink/Win) |
-| 7     | —      |         |           |        |       |
+| 7     | DONE   | 2026-04-30 | 2026-04-30 | docs(GH-1): add cross-platform install documentation and one-liner bootstrap | T7.5 manual (requires Linux/macOS — deferred to PR validation) |

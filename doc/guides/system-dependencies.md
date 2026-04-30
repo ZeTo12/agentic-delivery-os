@@ -7,14 +7,43 @@ source: https://github.com/juliusz-cwiakalski/agentic-delivery-os/blob/main/doc/
 
 External system tools required by ADOS scripts and CLI utilities.
 
-This document covers the four shell programs that ship with the repository:
+This document covers the shell and Python programs that ship with the repository:
 
 | Program | Path | Purpose |
 |---------|------|---------|
 | `text-to-image` | `tools/text-to-image` | AI image generation CLI (7 providers) |
-| `install.sh` | `scripts/install.sh` | Install/update ADOS globally or locally |
-| `uninstall.sh` | `scripts/uninstall.sh` | Remove ADOS from global or local install |
+| `install.py` | `scripts/install.py` | Install/update ADOS globally or locally (cross-platform, **recommended**) |
+| `uninstall.py` | `scripts/uninstall.py` | Remove ADOS from global or local install (cross-platform, **recommended**) |
+| `bootstrap.py` | `scripts/bootstrap.py` | One-liner bootstrapper — clones repo and runs install.py --global |
+| `install.sh` | `scripts/install.sh` | Bash install script (Linux/macOS fallback — **deprecated**, will be removed) |
+| `uninstall.sh` | `scripts/uninstall.sh` | Bash uninstall script (Linux/macOS fallback — **deprecated**, will be removed) |
 | `add-header-location.sh` | `scripts/add-header-location.sh` | Add MIT license headers to files |
+
+## Python Requirement
+
+The Python install/uninstall scripts require **Python ≥ 3.8**.
+
+### Installing Python 3.8+
+
+| Platform | Method | Command / Notes |
+|----------|--------|-----------------|
+| **Windows** | python.org installer | Download from [python.org/downloads](https://www.python.org/downloads/); ensure "Add to PATH" is checked. Alternatively: `winget install Python.Python.3.12` |
+| **Windows** | Microsoft Store | Search "Python 3.12" in the Store; installs without admin rights |
+| **Ubuntu / Debian** | apt | `sudo apt-get install -y python3` (Ubuntu 20.04+ ships Python 3.8+) |
+| **macOS** | Homebrew | `brew install python3` |
+| **macOS** | python.org | Download from [python.org/downloads](https://www.python.org/downloads/) |
+
+### Verify your Python version
+
+```bash
+python3 --version   # Linux/macOS
+python --version    # Windows
+py -3 --version     # Windows (py launcher)
+```
+
+Expected output: `Python 3.8.x` or newer.
+
+> **Windows note:** On Windows, `python3` may not exist; use `python` or `py -3` instead. The scripts use `#!/usr/bin/env python3` shebang, which is only relevant on Unix. On Windows, invoke scripts directly: `python scripts/install.py`.
 
 ## Dependency Matrix
 

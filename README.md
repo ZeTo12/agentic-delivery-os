@@ -52,8 +52,23 @@ Agentic Delivery OS codifies a predictable pipeline where quality and traceabili
 ## Quick start
 
 > **Requires:** [OpenCode](https://opencode.ai) — the AI coding agent that runs ADOS agents and commands.
+> **Python ≥ 3.8** is required for the Python install scripts (recommended). Bash variants remain available as fallback.
 
-**Global install** (one-liner — gives you ADOS agents in every project):
+### Global install (recommended — cross-platform)
+
+**Linux / macOS** one-liner:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/juliusz-cwiakalski/agentic-delivery-os/main/scripts/bootstrap.py | python3 -
+```
+
+**Windows PowerShell** one-liner:
+
+```powershell
+irm https://raw.githubusercontent.com/juliusz-cwiakalski/agentic-delivery-os/main/scripts/bootstrap.py | python -
+```
+
+### Global install (Bash fallback — Linux/macOS only)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/juliusz-cwiakalski/agentic-delivery-os/main/scripts/install.sh | bash -s -- --global
@@ -62,6 +77,10 @@ curl -fsSL https://raw.githubusercontent.com/juliusz-cwiakalski/agentic-delivery
 **Set up a specific project:**
 
 ```bash
+# Python (cross-platform — recommended)
+python3 ~/.ados/repo/scripts/install.py --local
+
+# Bash (Linux/macOS fallback)
 ~/.ados/repo/scripts/install.sh --local    # copy artifacts into current project
 ```
 
@@ -71,7 +90,15 @@ Then in your AI coding agent:
 /bootstrap                                  # AI-guided configuration
 ```
 
-**Uninstall:** `~/.ados/repo/scripts/uninstall.sh --global` or `~/.ados/repo/scripts/uninstall.sh --local`
+**Uninstall:**
+
+```bash
+# Python (cross-platform)
+python3 ~/.ados/repo/scripts/uninstall.py --global   # or --local
+
+# Bash (Linux/macOS fallback)
+~/.ados/repo/scripts/uninstall.sh --global
+```
 
 > **Update:** Re-run the same install commands to update to the latest version.
 
