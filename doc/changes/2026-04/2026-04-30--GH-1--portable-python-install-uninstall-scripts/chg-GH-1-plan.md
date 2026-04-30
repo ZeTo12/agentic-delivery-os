@@ -186,7 +186,7 @@ Key design decisions already resolved:
 
 **Tasks**:
 
-- [ ] **3.1** Create `scripts/ados_lib/git_ops.py`:
+- [x] **3.1** Create `scripts/ados_lib/git_ops.py`:
   - `require_git() -> None` — `shutil.which("git")` or `sys.exit(5)`
   - `git_run(args, cwd=None, check=True, capture=True) -> subprocess.CompletedProcess`
     - Always `["git"] + args` — never `shell=True`
@@ -473,7 +473,7 @@ Key design decisions already resolved:
 |-------|--------|---------|-----------|--------|-------|
 | 1     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add ados_lib shared library (types, logger, platform_paths, manifest) | 11 tests PASS |
 | 2     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add file_ops, gitignore, safety modules to ados_lib | 24 pass, 1 skip (symlink/Win) |
-| 3     | —      |         |           |        |       |
+| 3     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add git_ops module to ados_lib | 11 tests PASS; zero shell=True |
 | 4     | —      |         |           |        |       |
 | 5     | —      |         |           |        |       |
 | 6     | —      |         |           |        |       |
