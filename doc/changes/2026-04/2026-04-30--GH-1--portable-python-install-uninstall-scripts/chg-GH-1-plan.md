@@ -230,12 +230,12 @@ Key design decisions already resolved:
 
 **Tasks**:
 
-- [ ] **4.1** Create `scripts/ados_lib/cli.py` — argparse-based argument parsing:
+- [x] **4.1** Create `scripts/ados_lib/cli.py` — argparse-based argument parsing:
   - `parse_install_args(argv=None) -> InstallConfig`
   - `parse_uninstall_args(argv=None) -> UninstallConfig`
   - Flags (must match Bash): `-g/--global`, `-l/--local`, `-b/--branch <branch>`, `-n/--dry-run`, `-v/--verbose`, `-f/--force`, `-i/--interactive`, `--no-fetch`, `--allow-non-root`, `-h/--help`, `-V/--version`
   - Default mode: `--local` when neither `-g` nor `-l` supplied
-- [ ] **4.2** Create `scripts/install.py` — main entry-point:
+- [x] **4.2** Create `scripts/install.py` — main entry-point:
   - Shebang: `#!/usr/bin/env python3`
   - `signal.signal(signal.SIGINT, ...)` interrupt handler
   - `do_global_install(config)`:
@@ -245,10 +245,10 @@ Key design decisions already resolved:
   - `install_local_files(source_dir, config, counters)`:
     - Project-specific files, updatable files, template globs (`*.md` from template dir), directory stubs, `.gitignore` entries
   - `main(argv=None)` — testable entry-point (allows `main(["--dry-run", "--local"])` in tests)
-- [ ] **4.3** Environment variable support — all vars read and honoured:
+- [x] **4.3** Environment variable support — all vars read and honoured:
   - `ADOS_REPO_URL`, `ADOS_RAW_URL`, `ADOS_HOME`, `ADOS_REPO_DIR`, `OPENCODE_GLOBAL_DIR`, `ADOS_SOURCE_DIR`
   - `DRY_RUN`, `VERBOSE`, `FORCE`, `INTERACTIVE`, `NO_FETCH`, `ADOS_BRANCH`, `ALLOW_NON_ROOT`
-- [ ] **4.4** Exit codes (must match Bash):
+- [x] **4.4** Exit codes (must match Bash):
   - `0` = success, `2` = usage error, `3` = configuration error, `4` = runtime error, `5` = external dependency missing
 
 **Acceptance Criteria**:
@@ -474,7 +474,7 @@ Key design decisions already resolved:
 | 1     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add ados_lib shared library (types, logger, platform_paths, manifest) | 11 tests PASS |
 | 2     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add file_ops, gitignore, safety modules to ados_lib | 24 pass, 1 skip (symlink/Win) |
 | 3     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add git_ops module to ados_lib | 11 tests PASS; zero shell=True |
-| 4     | —      |         |           |        |       |
+| 4     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add portable install.py with full CLI parity | 4 tests PASS |
 | 5     | —      |         |           |        |       |
 | 6     | —      |         |           |        |       |
 | 7     | —      |         |           |        |       |
