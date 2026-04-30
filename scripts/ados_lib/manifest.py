@@ -30,6 +30,8 @@ UPDATABLE_FILES: list[str] = [
 TEMPLATE_DIR: str = "doc/templates"
 
 # Files that are PROJECT-SPECIFIC (skip if exists, preserve local edits)
+# Intentionally empty: all ADOS-managed files are updatable; project-specific
+# customisation files (e.g. north-star, ADRs) are not copied by the installer.
 PROJECT_FILES: list[str] = []
 
 # Directories to create as empty stubs

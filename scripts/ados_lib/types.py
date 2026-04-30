@@ -1,7 +1,7 @@
 """Types / dataclasses for ADOS install and uninstall configuration."""
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass

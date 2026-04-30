@@ -120,7 +120,6 @@ def install_local_files(
     # .gitignore entries
     gitignore = Path(".gitignore")
     ensure_gitignore_entry(gitignore, ".ai/local/", config)
-    ensure_gitignore_entry(gitignore, ".ai/local", config)
 
 
 def do_global_install(config: InstallConfig) -> None:
@@ -150,7 +149,7 @@ def do_global_install(config: InstallConfig) -> None:
 
 def do_local_install(config: InstallConfig) -> None:
     """Perform a local project ADOS install."""
-    require_project_root(config.allow_non_root, config)
+    require_project_root(config.allow_non_root, config.verbose)
     validate_paths(get_ados_home(), get_opencode_global_dir(), "")
 
     source_dir = resolve_source_dir(config)

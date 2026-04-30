@@ -48,7 +48,7 @@ def copy_file_with_diff(
 ) -> None:
     """Copy *src* to *dest* with change detection and mode-based resolution.
 
-    Implements the same 6-scenario logic as the Bash ``copy_file_with_diff``:
+    Implements the same 8-scenario logic as the Bash ``copy_file_with_diff``:
 
     1. Source missing    → warn, skip
     2. Dest is symlink   → replace with real copy (update counter)

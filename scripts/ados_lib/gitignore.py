@@ -10,11 +10,12 @@ _TAG = "ados-install"
 
 
 def file_contains_line(file_path: Path, pattern: str) -> bool:
-    """Return True if *pattern* appears as a substring in any line of *file_path*."""
+    """Return True if *pattern* matches exactly (stripped) any line of *file_path*."""
     if not file_path.is_file():
         return False
     try:
-        return pattern in file_path.read_text(encoding="utf-8", errors="replace")
+        text = file_path.read_text(encoding="utf-8", errors="replace")
+        return any(line.strip() == pattern for line in text.splitlines())
     except OSError:
         return False
 

@@ -103,7 +103,6 @@ def clone_or_update_repo(config: InstallConfig) -> None:
     if not config.dry_run:
         after_sha = get_short_sha(repo_dir)
         after_branch = get_current_branch(repo_dir)
-        before_sha_val = before_sha if "(repo_dir / '.git').is_dir()" else None
         if after_sha:
             log_info(_TAG, f"Installed at: {after_sha} ({after_branch})")
 
@@ -191,7 +190,7 @@ def resolve_source_dir(config: InstallConfig) -> Path:
     sys.exit(3)
 
 
-def require_project_root(allow_non_root: bool, config: InstallConfig) -> None:
+def require_project_root(allow_non_root: bool, verbose: bool = False) -> None:
     """Verify the CWD is a git project root (or a valid sub-dir when allowed).
 
     Mirrors ``require_project_root`` in both install.sh and uninstall.sh.
@@ -202,7 +201,7 @@ def require_project_root(allow_non_root: bool, config: InstallConfig) -> None:
         return
 
     # Check if inside a git repo at all
-    result = git_run(["rev-parse", "--show-toplevel"], check=False)
+    result = git_run(["rev-parse", "--show-toplevel"], cwd=Path.cwd(), check=False)
     git_root = result.stdout.strip() if result.returncode == 0 else ""
 
     if not git_root:

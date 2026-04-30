@@ -148,7 +148,7 @@ def do_global_uninstall(config: UninstallConfig) -> None:
 
 def do_local_uninstall(config: UninstallConfig) -> None:
     """Perform a local project ADOS uninstall."""
-    require_project_root(allow_non_root=False, config=config)  # type: ignore[arg-type]
+    require_project_root(allow_non_root=False, verbose=config.verbose)
 
     log_info(_TAG, "=== ADOS Local Uninstall ===")
     log_info(_TAG, f"Project: {Path.cwd()}")

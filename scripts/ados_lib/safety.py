@@ -21,14 +21,14 @@ def validate_paths(
 
     try:
         resolved_ados = ados_home.resolve()
-        if not str(resolved_ados).startswith(str(home)):
+        if resolved_ados.parts[:len(home.parts)] != home.parts:
             log_warn(_TAG, f"ADOS_HOME is outside $HOME: {ados_home}")
     except Exception:
         pass
 
     try:
         resolved_opencode = opencode_global_dir.resolve()
-        if not str(resolved_opencode).startswith(str(home)):
+        if resolved_opencode.parts[:len(home.parts)] != home.parts:
             log_warn(_TAG, f"OPENCODE_GLOBAL_DIR is outside $HOME: {opencode_global_dir}")
     except Exception:
         pass
@@ -76,6 +76,6 @@ def safe_rmdir(dir_path: Path, label: str, config: UninstallConfig) -> None:
             log_info(_TAG, f"[DRY-RUN] Would remove {label}/")
         else:
             shutil.rmtree(dir_path)
-        log_info(_TAG, f"remove {label}/")
+            log_info(_TAG, f"remove {label}/")
     else:
         log_debug(_TAG, f"skip   {label}/ (not found)", config.verbose)
