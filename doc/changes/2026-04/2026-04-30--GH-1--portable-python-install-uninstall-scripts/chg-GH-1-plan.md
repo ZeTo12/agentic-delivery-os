@@ -324,21 +324,21 @@ Key design decisions already resolved:
 
 **Tasks**:
 
-- [ ] **6.1** Add test helpers in `scripts/tests/__init__.py`:
+- [x] **6.1** Add test helpers in `scripts/tests/__init__.py`:
   - `make_mock_ados_source(tmp_dir) -> Path` — creates a fake ADOS repo tree with stub `.opencode/agent/*.md`, `.opencode/command/*.md`, templates, etc.
   - `run_tests()` helper or confirm `python -m unittest discover -s scripts/tests` works from repo root
-- [ ] **6.2** Create `scripts/tests/test_install_integration.py` — full install round-trip:
-  - [ ] Step A: Create mock ADOS source via `make_mock_ados_source()`
-  - [ ] Step B: Run `install.main(["--local", "--no-fetch"])` with `ADOS_SOURCE_DIR` pointing to mock source
-  - [ ] Step C: Assert all expected files and directories exist in tmp target
-  - [ ] Step D: Run again — assert idempotency (counters: `added=0`, `updated=0`, `unchanged=N`)
-  - [ ] Step E: Modify one file in mock source → run again → assert `updated=1`
-- [ ] **6.3** Create `scripts/tests/test_uninstall_integration.py` — full uninstall round-trip:
+- [x] **6.2** Create `scripts/tests/test_install_integration.py` — full install round-trip:
+  - [x] Step A: Create mock ADOS source via `make_mock_ados_source()`
+  - [x] Step B: Run `install.main(["--local", "--no-fetch"])` with `ADOS_SOURCE_DIR` pointing to mock source
+  - [x] Step C: Assert all expected files and directories exist in tmp target
+  - [x] Step D: Run again — assert idempotency (counters: `added=0`, `updated=0`, `unchanged=N`)
+  - [x] Step E: Modify one file in mock source → run again → assert `updated=1`
+- [x] **6.3** Create `scripts/tests/test_uninstall_integration.py` — full uninstall round-trip:
   - Install first (reuse helper), then run `uninstall.main(["--local", "--force"])`, assert files removed
-- [ ] **6.4** Document manual cross-platform verification steps in a test run checklist comment in `test_install_integration.py`
-- [ ] **6.5** Handle platform-specific edge cases in tests:
-  - Windows: path with spaces — `Path(tmp) / "John Doe" / "project"`
-  - Linux: `XDG_CONFIG_HOME` env override
+- [x] **6.4** Document manual cross-platform verification steps in a test run checklist comment in `test_install_integration.py`
+- [x] **6.5** Handle platform-specific edge cases in tests:
+  - Windows: path with spaces — `Path(tmp) / "John Doe" / "project"` (T28 — PASS on Windows)
+  - Linux: `XDG_CONFIG_HOME` env override (T29 — mocked)
   - macOS: case-insensitive FS (document limitation; do not add special code)
 
 **Acceptance Criteria**:
@@ -476,5 +476,5 @@ Key design decisions already resolved:
 | 3     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add git_ops module to ados_lib | 11 tests PASS; zero shell=True |
 | 4     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add portable install.py with full CLI parity | 4 tests PASS |
 | 5     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add portable uninstall.py with full CLI parity | 4 tests PASS |
-| 6     | —      |         |           |        |       |
+| 6     | DONE   | 2026-04-30 | 2026-04-30 | test(GH-1): add cross-platform integration test suite for Python install scripts | 62 pass, 1 skip (symlink/Win) |
 | 7     | —      |         |           |        |       |
