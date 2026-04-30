@@ -10,7 +10,7 @@ phases:
   review_fix:         { started: "2026-04-30", completed: "2026-04-30" }
   quality_gates:      { started: "2026-04-30", completed: "2026-04-30" }
   dod_check:          { started: "2026-04-30", completed: "2026-04-30" }
-  pr_creation:        { started: "2026-04-30", completed: null, url: null }
+  pr_creation:        { started: "2026-04-30", completed: "2026-04-30", url: "https://github.com/ZeTo12/agentic-delivery-os/pull/2" }
 
 decisions: []
 
