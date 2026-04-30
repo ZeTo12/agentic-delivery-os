@@ -29,8 +29,9 @@ Dieses Plan portiert die bestehenden Bash-Skripte `scripts/install.sh` (~760 Zei
 - Shared Library `ados_lib/` mit plattformunabhängigen Primitiven
 - Plattform-spezifische Pfade (XDG auf Linux, `~/.config` auf macOS, `%APPDATA%` auf Windows)
 - Unit-Tests mit `unittest` (stdlib) — kein pytest erforderlich
-- CI-Matrix für Windows, Linux, macOS
 - One-Liner-Install Wrapper (`curl | python3 -`)
+
+> **Hinweis:** Automatisierte CI (GitHub Actions) ist ein separates Vorhaben und nicht Teil dieses Plans. Das Projekt verwendet aktuell keine GitHub Actions. Die Einführung von CI-Infrastruktur sollte als eigenständiges Ticket behandelt werden, das auch die bestehenden Bash-Tests unter `scripts/.tests/` und `tools/.tests/` abdeckt.
 
 ### Out of Scope
 
@@ -396,32 +397,25 @@ scripts/
   - Windows: Lange Pfade (>260 Zeichen)
   - macOS: Case-insensitive Dateisystem
   - Linux: XDG_CONFIG_HOME Override
-- [ ] **6.4** GitHub Actions Workflow (`.github/workflows/test-scripts.yml`):
-  ```yaml
-  strategy:
-    matrix:
-      os: [ubuntu-latest, macos-latest, windows-latest]
-      python-version: ["3.8", "3.12"]
-  ```
-- [ ] **6.5** README-Abschnitt aktualisieren — Installationsanweisungen für alle Plattformen
+- [ ] **6.4** README-Abschnitt aktualisieren — Installationsanweisungen für alle Plattformen
+
+> **Aus Scope entfernt:** GitHub Actions CI-Workflow (`.github/workflows/test-scripts.yml`) wird als separates Vorhaben behandelt. Das Projekt verwendet aktuell keine GitHub Actions. Tests werden bis dahin manuell auf den Zielplattformen ausgeführt.
 
 **Acceptance Criteria**:
 
-- Tests laufen grün auf Windows, Linux und macOS
+- Tests laufen grün auf Windows, Linux und macOS (manuelle Verifikation)
 - Tests laufen mit Python 3.8 und Python 3.12
 - Kein Test benötigt externe Pakete (nur stdlib `unittest`)
-- CI-Workflow läuft bei jedem Push auf `scripts/**`
 
 **Files and modules**:
 
 - `scripts/tests/__init__.py` (new)
 - `scripts/tests/test_install_integration.py` (new)
 - `scripts/tests/test_uninstall_integration.py` (new)
-- `.github/workflows/test-scripts.yml` (new or updated)
 
 **Tests**:
 
-- CI-Matrix: 2 Python-Versionen × 3 Plattformen = 6 Läufe
+- Manuelle Verifikation auf allen 3 Plattformen mit 2 Python-Versionen
 
 **Completion signal**: `test: add cross-platform test suite and CI for Python install scripts`
 
@@ -525,7 +519,6 @@ scripts/
 | Uninstall-Skript (Python) | `scripts/uninstall.py` | Code |
 | Bootstrap-Skript | `scripts/bootstrap.py` | Code |
 | Unit-Tests | `scripts/tests/` | Tests |
-| CI-Workflow | `.github/workflows/test-scripts.yml` | CI |
 
 ---
 
@@ -534,6 +527,7 @@ scripts/
 | Version | Datum | Autor | Änderungen |
 |---------|-------|-------|------------|
 | 1.0 | 2026-04-30 | — | Initialer Plan |
+| 1.1 | 2026-04-30 | — | GitHub Actions CI (6.4) als separates Vorhaben ausgelagert; Task-Nummerierung in Phase 6 angepasst |
 
 ## Execution Log
 
@@ -546,4 +540,10 @@ scripts/
 | 5 | — | | | | |
 | 6 | — | | | | |
 | 7 | — | | | | |
+
+
+
+
+
+
 
