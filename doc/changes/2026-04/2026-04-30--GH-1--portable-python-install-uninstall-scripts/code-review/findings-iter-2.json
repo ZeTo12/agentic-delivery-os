@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "severity": "minor",
+    "confidence": "high",
+    "file": "scripts/ados_lib/git_ops.py",
+    "line": 85,
+    "title": "Arrow character '→' in log string causes UnicodeEncodeError on Windows cp1252 console",
+    "description": "The string `f\"Switching branch: {current_branch} → {branch}\"` uses the Unicode right-arrow character (U+2192). On Windows terminals with a cp1252 (or similar non-UTF-8) code page, `print()` raises `UnicodeEncodeError: 'charmap' codec can't encode character '\\u2192'`. This is confirmed by the test suite: `test_switches_branch_when_needed` fails with exactly this error on the Windows Python 3.13 runner.",
+    "suggestedFix": "Replace the arrow with an ASCII equivalent: `f\"Switching branch: {current_branch} -> {branch}\"`. Alternatively, set `PYTHONIOENCODING=utf-8` in the shebang documentation, but the simpler and more robust fix is to avoid non-ASCII literals in log strings.",
+    "suppressed": false
+  },
+  {
+    "id": 2,
+    "severity": "minor",
+    "confidence": "high",
+    "file": "scripts/ados_lib/file_ops.py",
+    "line": 106,
+    "title": "Double-log on dry-run for new-file path in copy_file_with_diff",
+    "description": "In the 'new file' branch (lines 106–112), when `config.dry_run` is True the code logs `[DRY-RUN] Would add {label}` AND then unconditionally logs `add    {label}` on line 111. This produces two log lines for a single planned operation, incorrectly implying the file was actually added. The same pattern exists in `ensure_dir` (lines 131–135).",
+    "suggestedFix": "In the new-file branch, move `log_info(_TAG, f\"add    {label}\")` inside the `else` block (i.e., only when `not config.dry_run`). Apply the same fix to `ensure_dir`: move `log_info(_TAG, f\"create {label}/\")` inside the `else` branch. The dry-run branch already logs `[DRY-RUN] Would add/create …` which is sufficient.",
+    "suppressed": false
+  },
+  {
+    "id": 3,
+    "severity": "minor",
+    "confidence": "high",
+    "file": "scripts/uninstall.py",
+    "line": 115,
+    "title": "Double-log on dry-run for empty-directory removal in remove_local_files",
+    "description": "In `remove_local_files` (lines 115–130), when `config.dry_run` is True the code logs `[DRY-RUN] Would remove {rel}/ (empty)` AND then unconditionally logs `remove {rel}/ (empty)` on the next line. This is the same double-log pattern as finding #2, confirmed by the test output showing both lines emitted during dry-run uninstall.",
+    "suggestedFix": "Move `log_info(_TAG, f\"remove {rel}/ (empty)\")` inside the `else` branch so it only fires when `not config.dry_run`. The dry-run branch already logs the `[DRY-RUN]` line.",
+    "suppressed": false
+  },
+  {
+    "id": 4,
+    "severity": "minor",
+    "confidence": "high",
+    "file": "scripts/ados_lib/file_ops.py",
+    "line": 146,
+    "title": "Double-log on dry-run for remove_file",
+    "description": "In `remove_file` (lines 145–151), when `config.dry_run` is True the code logs `[DRY-RUN] Would remove {label}` AND then unconditionally logs `remove {label}` on line 150. Confirmed by test output: dry-run uninstall emits both lines for every file.",
+    "suggestedFix": "Move `log_info(_TAG, f\"remove {label}\")` inside the `else` branch (only when `not config.dry_run`). The dry-run branch already logs `[DRY-RUN] Would remove …`.",
+    "suppressed": false
+  },
+  {
+    "id": 5,
+    "severity": "nit",
+    "confidence": "high",
+    "file": "scripts/ados_lib/git_ops.py",
+    "line": 136,
+    "title": "Same '→' arrow character used in auto_fetch_source log line",
+    "description": "`f\"Switching source branch: {current_branch} → {config.branch}\"` on line 136 has the same non-ASCII arrow character as finding #1. Will cause the same UnicodeEncodeError on Windows cp1252 consoles.",
+    "suggestedFix": "Replace `→` with `->` for ASCII safety, consistent with the fix for finding #1.",
+    "suppressed": false
+  }
+]

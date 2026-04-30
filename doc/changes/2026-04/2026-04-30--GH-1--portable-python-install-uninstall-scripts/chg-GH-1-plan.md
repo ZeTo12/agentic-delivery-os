@@ -493,12 +493,39 @@ Key design decisions already resolved:
 
 ---
 
+---
+
+### Phase 9: Code Review Remediation (Iteration 2)
+
+**Goal**: Fix the 4 minor double-log findings and 1 nit (non-ASCII arrow character) identified in code review iteration 2.
+
+**Tasks**:
+
+- [ ] **9.1** `scripts/ados_lib/git_ops.py` — Replace `→` (U+2192) with `->` in `clone_or_update_repo` log string (finding #1 iter-2): `f"Switching branch: {current_branch} -> {branch}"`.
+- [ ] **9.2** `scripts/ados_lib/git_ops.py` — Replace `→` with `->` in `auto_fetch_source` log string (finding #5 iter-2): `f"Switching source branch: {current_branch} -> {config.branch}"`.
+- [ ] **9.3** `scripts/ados_lib/file_ops.py` — Fix double-log in `copy_file_with_diff` new-file branch (finding #2 iter-2): move `log_info(_TAG, f"add    {label}")` inside the `else` branch (only when `not config.dry_run`).
+- [ ] **9.4** `scripts/ados_lib/file_ops.py` — Fix double-log in `ensure_dir` (finding #2 iter-2): move `log_info(_TAG, f"create {label}/")` inside the `else` branch.
+- [ ] **9.5** `scripts/ados_lib/file_ops.py` — Fix double-log in `remove_file` (finding #4 iter-2): move `log_info(_TAG, f"remove {label}")` inside the `else` branch.
+- [ ] **9.6** `scripts/uninstall.py` — Fix double-log in `remove_local_files` empty-directory removal (finding #3 iter-2): move `log_info(_TAG, f"remove {rel}/ (empty)")` inside the `else` branch.
+
+**Acceptance Criteria**:
+
+- Must: `test_switches_branch_when_needed` passes on Windows (no UnicodeEncodeError). — Verified by test run.
+- Must: Dry-run install emits exactly one log line per planned operation (no `add`/`create` line alongside `[DRY-RUN] Would add/create`).
+- Must: Dry-run uninstall emits exactly one log line per planned removal (no `remove` line alongside `[DRY-RUN] Would remove`).
+- Must: All 63 tests pass (62 pass + 1 skip; 0 errors).
+
+**Completion signal**: `fix(GH-1): remediate code review findings (iteration 2)`
+
+---
+
 ## Plan Revision Log
 
 | Version | Date       | Author      | Changes                       |
 |---------|------------|-------------|-------------------------------|
 | 1.0     | 2026-04-30 | plan-writer | Initial plan derived from `doc/planning/portable-install-scripts-plan.md` |
 | 1.1     | 2026-04-30 | reviewer    | Added Phase 8: Code Review Remediation (Iteration 1) — 4 major, 5 minor findings |
+| 1.2     | 2026-04-30 | reviewer    | Added Phase 9: Code Review Remediation (Iteration 2) — 4 minor, 1 nit findings |
 
 ## Execution Log
 
