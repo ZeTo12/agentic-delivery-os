@@ -87,24 +87,24 @@ Key design decisions already resolved:
 
 **Tasks**:
 
-- [ ] **1.1** Create `scripts/ados_lib/__init__.py` — package init with `__version__ = "2.0.0"`
-- [ ] **1.2** Create `scripts/ados_lib/types.py` — dataclasses for runtime configuration:
+- [x] **1.1** Create `scripts/ados_lib/__init__.py` — package init with `__version__ = "2.0.0"`
+- [x] **1.2** Create `scripts/ados_lib/types.py` — dataclasses for runtime configuration:
   - `InstallConfig(mode, branch, dry_run, verbose, force, interactive, no_fetch, allow_non_root)`
   - `UninstallConfig(mode, dry_run, verbose, force)`
   - `Counters(added, updated, unchanged)` / `Counters(removed, skipped)`
-- [ ] **1.3** Create `scripts/ados_lib/logger.py` — logging primitives:
+- [x] **1.3** Create `scripts/ados_lib/logger.py` — logging primitives:
   - `log_info(tag, msg)`, `log_warn(tag, msg)`, `log_err(tag, msg)`, `log_debug(tag, msg, verbose)`
   - Coloured output when `sys.stderr.isatty()` / `sys.stdout.isatty()` — `\033[...m` sequences
   - Format identical to Bash: `[INFO]  (ados-install) message`
-- [ ] **1.4** Create `scripts/ados_lib/platform_paths.py` — OS-specific path resolution:
+- [x] **1.4** Create `scripts/ados_lib/platform_paths.py` — OS-specific path resolution:
   - `get_ados_home() -> Path` — `ADOS_HOME` env var or `~/.ados`
   - `get_ados_repo_dir() -> Path` — `ADOS_REPO_DIR` env var or `~/.ados/repo`
   - `get_opencode_global_dir() -> Path` — Windows: `%APPDATA%/opencode`; Linux: XDG; macOS: `~/.config/opencode`
   - `get_ados_repo_url() -> str`, `get_ados_raw_url() -> str`
-- [ ] **1.5** Create `scripts/ados_lib/manifest.py` — file lists (1:1 copy from Bash):
+- [x] **1.5** Create `scripts/ados_lib/manifest.py` — file lists (1:1 copy from Bash):
   - `UPDATABLE_FILES`, `TEMPLATE_DIR`, `PROJECT_FILES`, `LOCAL_DIRS`
   - `AGENT_FILES`, `COMMAND_FILES`, `LOCAL_UPDATABLE_FILES`, `LOCAL_TEMPLATE_FILES`
-- [ ] **1.6** Create `scripts/tests/__init__.py` — test package stub
+- [x] **1.6** Create `scripts/tests/__init__.py` — test package stub (includes `make_mock_ados_source` helper)
 
 **Acceptance Criteria**:
 
@@ -471,7 +471,7 @@ Key design decisions already resolved:
 
 | Phase | Status | Started | Completed | Commit | Notes |
 |-------|--------|---------|-----------|--------|-------|
-| 1     | —      |         |           |        |       |
+| 1     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add ados_lib shared library (types, logger, platform_paths, manifest) | 11 tests PASS |
 | 2     | —      |         |           |        |       |
 | 3     | —      |         |           |        |       |
 | 4     | —      |         |           |        |       |
