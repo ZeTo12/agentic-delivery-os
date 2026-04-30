@@ -461,11 +461,60 @@ Key design decisions already resolved:
 | README (install section)        | `README.md`                                                                                 | Docs     |
 | System dependencies guide       | `doc/guides/system-dependencies.md`                                                         | Docs     |
 
+---
+
+### Phase 8: Code Review Remediation (Iteration 1)
+
+**Goal**: Fix the 4 major findings identified in code review iteration 1 and address the 5 minor findings.
+
+**Tasks**:
+
+- [ ] **8.1** `scripts/ados_lib/safety.py` — Fix path-prefix check in `validate_paths` (finding #1):
+  - Replace `str(resolved).startswith(str(home))` with a parts-based check:
+    `resolved.parts[:len(home.parts)] == home.parts`
+  - Apply the same fix to both the `ados_home` and `opencode_global_dir` checks.
+- [ ] **8.2** `scripts/ados_lib/git_ops.py` — Remove dead code in `clone_or_update_repo` (finding #2):
+  - Delete line 106: `before_sha_val = before_sha if "(repo_dir / '.git').is_dir()" else None`
+  - The variable is never used; the string-literal condition is always truthy.
+- [ ] **8.3** `scripts/uninstall.py` + `scripts/ados_lib/git_ops.py` — Fix type mismatch in `require_project_root` call (finding #3):
+  - Refactor `require_project_root` to accept a `verbose: bool` parameter directly (or a structural protocol) instead of a full `InstallConfig`.
+  - Update all call sites (`install.py`, `uninstall.py`) accordingly.
+  - Remove the `# type: ignore[arg-type]` comment.
+- [ ] **8.4** `scripts/ados_lib/safety.py` — Fix double-log on dry-run in `safe_rmdir` (finding #4):
+  - Move `log_info(_TAG, f"remove {label}/")` (line 79) inside the `else` branch so it only fires when `not config.dry_run`.
+- [ ] **8.5** `scripts/ados_lib/gitignore.py` — Fix substring match in `file_contains_line` (finding #7):
+  - Change the check to exact line matching: `any(line.strip() == pattern for line in text.splitlines())`
+- [ ] **8.6** `scripts/install.py` — Resolve redundant `.gitignore` entries (finding #8):
+  - Decide whether `.ai/local/` or `.ai/local` is canonical; keep only one call to `ensure_gitignore_entry`.
+  - After fixing finding #7 (exact line match), verify both entries can coexist if both are intentional.
+- [ ] **8.7** `scripts/ados_lib/manifest.py` — Document empty `PROJECT_FILES` (finding #6):
+  - Add a comment explaining why `PROJECT_FILES = []` is intentional (or populate it if the Bash version has entries).
+- [ ] **8.8** `scripts/ados_lib/types.py` — Remove unused `field` import (finding #12):
+  - Change `from dataclasses import dataclass, field` to `from dataclasses import dataclass`.
+- [ ] **8.9** `scripts/ados_lib/git_ops.py` — Add explicit `cwd=Path.cwd()` to `require_project_root` git call (finding #9):
+  - Pass `cwd=Path.cwd()` to the `git_run(["rev-parse", "--show-toplevel"], ...)` call.
+- [ ] **8.10** `scripts/ados_lib/file_ops.py` — Fix docstring scenario count (finding #11):
+  - Update the `copy_file_with_diff` docstring to say "8-scenario logic" (or reconcile to 6 with notes).
+
+**Acceptance Criteria**:
+
+- Must: `safe_rmdir` dry-run emits exactly one log line (`[DRY-RUN] Would remove …`) — no spurious `remove …/` line.
+- Must: `validate_paths` does not warn for `/home/alice` when path is `/home/alice2/something`.
+- Must: `require_project_root` compiles and passes type checking without `# type: ignore`.
+- Must: `clone_or_update_repo` contains no string-literal conditions; `before_sha_val` is removed.
+- Must: `file_contains_line(".ai/local/", ".ai/local")` returns `False` (exact match only).
+- Must: All existing tests continue to pass after refactor.
+
+**Completion signal**: `fix(GH-1): remediate code review findings (iteration 1)`
+
+---
+
 ## Plan Revision Log
 
 | Version | Date       | Author      | Changes                       |
 |---------|------------|-------------|-------------------------------|
 | 1.0     | 2026-04-30 | plan-writer | Initial plan derived from `doc/planning/portable-install-scripts-plan.md` |
+| 1.1     | 2026-04-30 | reviewer    | Added Phase 8: Code Review Remediation (Iteration 1) — 4 major, 5 minor findings |
 
 ## Execution Log
 
