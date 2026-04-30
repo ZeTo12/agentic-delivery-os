@@ -137,7 +137,7 @@ Key design decisions already resolved:
 
 **Tasks**:
 
-- [ ] **2.1** Create `scripts/ados_lib/file_ops.py`:
+- [x] **2.1** Create `scripts/ados_lib/file_ops.py`:
   - `copy_file_with_diff(src, dest, label, config, counters, updatable=False) -> None`
     - Detect symlinks (`Path.is_symlink()`) and replace with real copy
     - Content comparison via `filecmp.cmp(shallow=False)`
@@ -146,10 +146,10 @@ Key design decisions already resolved:
   - `copy_updatable_file(src, dest, label, config, counters)` — thin wrapper
   - `ensure_dir(dir_path, label, config) -> None` — `mkdir(parents=True, exist_ok=True)` with dry-run gate
   - `remove_file(path, label, config, counters) -> None` — `unlink(missing_ok=True)` with dry-run gate
-- [ ] **2.2** Create `scripts/ados_lib/gitignore.py`:
+- [x] **2.2** Create `scripts/ados_lib/gitignore.py`:
   - `file_contains_line(file_path, pattern) -> bool`
   - `ensure_gitignore_entry(gitignore_path, entry, config) -> None` — append only if not already present
-- [ ] **2.3** Create `scripts/ados_lib/safety.py`:
+- [x] **2.3** Create `scripts/ados_lib/safety.py`:
   - `validate_paths(config) -> None` — warn if `ADOS_HOME` or `OPENCODE_GLOBAL_DIR` is outside `$HOME`
   - `safe_rmdir(dir_path, label, config) -> None`:
     - Reject empty path
@@ -472,7 +472,7 @@ Key design decisions already resolved:
 | Phase | Status | Started | Completed | Commit | Notes |
 |-------|--------|---------|-----------|--------|-------|
 | 1     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add ados_lib shared library (types, logger, platform_paths, manifest) | 11 tests PASS |
-| 2     | —      |         |           |        |       |
+| 2     | DONE   | 2026-04-30 | 2026-04-30 | feat(GH-1): add file_ops, gitignore, safety modules to ados_lib | 24 pass, 1 skip (symlink/Win) |
 | 3     | —      |         |           |        |       |
 | 4     | —      |         |           |        |       |
 | 5     | —      |         |           |        |       |
