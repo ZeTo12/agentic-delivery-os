@@ -108,7 +108,7 @@ def copy_file_with_diff(
     else:
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dest)
-    log_info(_TAG, f"add    {label}")
+        log_info(_TAG, f"add    {label}")
     counters.added += 1
 
 
@@ -132,7 +132,7 @@ def ensure_dir(dir_path: Path, label: str, config: InstallConfig) -> None:
         log_info(_TAG, f"[DRY-RUN] Would create {label}/")
     else:
         dir_path.mkdir(parents=True, exist_ok=True)
-    log_info(_TAG, f"create {label}/")
+        log_info(_TAG, f"create {label}/")
 
 
 def remove_file(
@@ -147,7 +147,7 @@ def remove_file(
             log_info(_TAG, f"[DRY-RUN] Would remove {label}")
         else:
             path.unlink(missing_ok=True)
-        log_info(_TAG, f"remove {label}")
+            log_info(_TAG, f"remove {label}")
         counters.removed += 1
     else:
         log_debug(_TAG, f"skip   {label} (not found)", config.verbose)

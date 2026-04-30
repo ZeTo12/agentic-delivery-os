@@ -82,7 +82,7 @@ def clone_or_update_repo(config: InstallConfig) -> None:
 
         current_branch = get_current_branch(repo_dir)
         if current_branch and current_branch != branch:
-            log_info(_TAG, f"Switching branch: {current_branch} → {branch}")
+            log_info(_TAG, f"Switching branch: {current_branch} -> {branch}")
             if not config.dry_run:
                 git_run(["fetch", "origin"], cwd=repo_dir, check=False)
                 result = git_run(["checkout", branch], cwd=repo_dir, check=False)
@@ -133,7 +133,7 @@ def auto_fetch_source(source_dir: Path, config: InstallConfig) -> None:
 
     current_branch = get_current_branch(source_dir)
     if current_branch and current_branch != config.branch:
-        log_info(_TAG, f"Switching source branch: {current_branch} → {config.branch}")
+        log_info(_TAG, f"Switching source branch: {current_branch} -> {config.branch}")
         if not config.dry_run:
             git_run(["fetch", "origin"], cwd=source_dir, check=False)
             result = git_run(["checkout", config.branch], cwd=source_dir, check=False)

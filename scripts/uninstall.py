@@ -111,7 +111,7 @@ def remove_local_files(config: UninstallConfig, counters: UninstallCounters) -> 
                     log_info(_TAG, f"[DRY-RUN] Would remove {rel}/ (empty)")
                 else:
                     d.rmdir()
-                log_info(_TAG, f"remove {rel}/ (empty)")
+                    log_info(_TAG, f"remove {rel}/ (empty)")
             else:
                 log_debug(_TAG, f"skip   {rel}/ (not empty)", config.verbose)
 
