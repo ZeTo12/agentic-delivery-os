@@ -715,7 +715,7 @@ test_local_requires_git_dir() {
   )" || exit_code=$?
 
   assert_exit_code 2 "${exit_code}" "Should fail without .git directory"
-  assert_contains "${stdout}" "Not a project root" "Should mention missing .git"
+  assert_contains "${stdout}" "Not inside a git repository" "Should mention missing .git"
 }
 
 # ============================================================================
