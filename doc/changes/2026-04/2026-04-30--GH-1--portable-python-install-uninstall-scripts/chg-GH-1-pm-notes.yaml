@@ -1,0 +1,27 @@
+change_id: GH-1
+title: "feat: add portable Python install/uninstall scripts (cross-platform parity)"
+phases:
+  clarify_scope:      { started: "2026-04-30", completed: "2026-04-30" }
+  specification:      { started: "2026-04-30", completed: "2026-04-30" }
+  test_planning:      { started: "2026-04-30", completed: "2026-04-30" }
+  delivery_planning:  { started: "2026-04-30", completed: "2026-04-30" }
+  delivery:           { started: "2026-04-30", completed: "2026-04-30" }
+  system_spec_update: { started: "2026-04-30", completed: "2026-04-30" }
+  review_fix:         { started: "2026-04-30", completed: "2026-04-30" }
+  quality_gates:      { started: "2026-04-30", completed: "2026-04-30" }
+  dod_check:          { started: "2026-04-30", completed: "2026-04-30" }
+  pr_creation:        { started: "2026-04-30", completed: "2026-04-30", url: "https://github.com/ZeTo12/agentic-delivery-os/pull/2" }
+
+decisions: []
+
+open_questions: []
+
+blockers: []
+
+notes:
+  - text: "Detailed planning doc already exists at doc/planning/portable-install-scripts-plan.md (7 phases, ~4-5 days effort). Used as primary input for spec and plan agents."
+    type: info
+    date: "2026-04-30"
+  - text: "Concept doc exists at doc/planning/portable-install-scripts-concept.md."
+    type: info
+    date: "2026-04-30"

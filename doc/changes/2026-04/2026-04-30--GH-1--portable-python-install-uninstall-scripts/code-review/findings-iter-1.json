@@ -1,0 +1,135 @@
+[
+  {
+    "id": 1,
+    "severity": "major",
+    "confidence": "high",
+    "file": "scripts/ados_lib/safety.py",
+    "line": 24,
+    "title": "Path-prefix check uses string startswith — vulnerable to false positives on similar directory names",
+    "description": "validate_paths uses `str(resolved).startswith(str(home))` to test whether a path is inside $HOME. This fails for a home directory of /home/alice when the path is /home/alice2/something — the check incorrectly passes. The correct test is to use Path.is_relative_to() (Python 3.9+) or check that resolved.parts[:len(home.parts)] == home.parts.",
+    "suggestedFix": "Replace the startswith string comparison with a parts-based check: `resolved.parts[:len(home.parts)] == home.parts`. This is safe on Python 3.8+ and avoids the false-positive edge case.",
+    "suppressed": false
+  },
+  {
+    "id": 2,
+    "severity": "major",
+    "confidence": "high",
+    "file": "scripts/ados_lib/git_ops.py",
+    "line": 106,
+    "title": "Dead / nonsensical code: before_sha_val assigned from a string literal condition",
+    "description": "Line 106 reads `before_sha_val = before_sha if \"(repo_dir / '.git').is_dir()\" else None`. The condition is a non-empty string literal, which is always truthy, making the else branch unreachable. The variable `before_sha_val` is also never used after assignment. This is a copy-paste artefact that leaves dead code in a critical module.",
+    "suggestedFix": "Remove lines 106–108 entirely. The `after_sha` / `after_branch` logging on line 107–108 is already correct; the dead `before_sha_val` assignment serves no purpose.",
+    "suppressed": false
+  },
+  {
+    "id": 3,
+    "severity": "major",
+    "confidence": "high",
+    "file": "scripts/uninstall.py",
+    "line": 151,
+    "title": "require_project_root called with wrong config type — type: ignore masks a real bug",
+    "description": "`require_project_root(allow_non_root=False, config=config)` passes an `UninstallConfig` where `git_ops.require_project_root` expects an `InstallConfig`. The `# type: ignore[arg-type]` comment suppresses the type error rather than fixing it. At runtime this works only because both dataclasses happen to share the `verbose` attribute, but it is fragile and will break silently if `require_project_root` ever accesses an `InstallConfig`-only field.",
+    "suggestedFix": "Refactor `require_project_root` to accept a protocol or a common base type (e.g., a `verbose: bool` protocol), or duplicate the small function for uninstall. Remove the `# type: ignore` comment once the signature is correct.",
+    "suppressed": false
+  },
+  {
+    "id": 4,
+    "severity": "major",
+    "confidence": "high",
+    "file": "scripts/ados_lib/safety.py",
+    "line": 78,
+    "title": "Log line emitted after conditional block regardless of dry_run — double-logs on dry-run",
+    "description": "In `safe_rmdir`, the `log_info(_TAG, f\"remove {label}/\")` call on line 79 is outside the `if config.dry_run` / `else` block, so it always executes. On a dry-run this produces two log lines: `[DRY-RUN] Would remove …` AND `remove …/`, incorrectly implying the directory was actually removed.",
+    "suggestedFix": "Move `log_info(_TAG, f\"remove {label}/\")` inside the `else` branch (i.e., only when `not config.dry_run`). The dry-run branch already logs `[DRY-RUN] Would remove …` which is sufficient.",
+    "suppressed": false
+  },
+  {
+    "id": 5,
+    "severity": "minor",
+    "confidence": "high",
+    "file": "scripts/ados_lib/logger.py",
+    "line": 31,
+    "title": "log_info writes to stdout without colour; spec says format must match Bash — [INFO] has no colour in Bash either, but [WARN]/[ERR] inconsistency: INFO not coloured, others are",
+    "description": "The spec (F-14, NFR-9) requires log format parity with Bash. In the Bash scripts, [INFO] lines are plain while [WARN] and [ERROR] are coloured. The Python implementation matches this correctly. However, `log_info` does not check `sys.stdout.isatty()` before printing — it always prints plain. This is correct behaviour but worth noting: if colour for INFO is ever added, the isatty guard must be applied. No action required unless parity with a coloured Bash INFO is desired.",
+    "description": "Minor documentation/consistency note: log_info does not apply colour (consistent with Bash), but unlike log_warn/log_err it also does not accept a stream parameter. This is fine for current use but slightly asymmetric.",
+    "suggestedFix": "No immediate fix required. Consider adding a comment to log_info explaining the intentional absence of colour to prevent future contributors from adding it without the isatty guard.",
+    "suppressed": false
+  },
+  {
+    "id": 6,
+    "severity": "minor",
+    "confidence": "high",
+    "file": "scripts/ados_lib/manifest.py",
+    "line": 33,
+    "title": "PROJECT_FILES is an empty list — spec says project-specific files should be preserved",
+    "description": "The spec (F-7, DM-5) states that project-specific files are preserved on re-run. `PROJECT_FILES` is defined as an empty list `[]`. If the Bash `install.sh` has entries in its equivalent list, this is a parity gap. If the Bash list is also empty, this is fine but should be documented explicitly.",
+    "suggestedFix": "Verify against `install.sh` that the project-specific file list is intentionally empty. If so, add a comment: `# Intentionally empty: all ADOS-managed files are updatable; project-specific config is not installed by ADOS.`",
+    "suppressed": false
+  },
+  {
+    "id": 7,
+    "severity": "minor",
+    "confidence": "medium",
+    "file": "scripts/ados_lib/gitignore.py",
+    "line": 17,
+    "title": "file_contains_line uses substring match — could match partial patterns",
+    "description": "`file_contains_line` checks `pattern in file_path.read_text(...)`. This means a pattern like `.ai/local` would match a line `.ai/local/` (or vice versa), potentially causing the duplicate-detection logic to skip adding the more specific entry. The spec (F-9) requires idempotent entry management.",
+    "suggestedFix": "Change the check to match whole lines: `any(line.strip() == pattern for line in text.splitlines())`. This prevents false duplicate detection between `.ai/local` and `.ai/local/`.",
+    "suppressed": false
+  },
+  {
+    "id": 8,
+    "severity": "minor",
+    "confidence": "high",
+    "file": "scripts/install.py",
+    "line": 123,
+    "title": "Two .gitignore entries added for .ai/local/ and .ai/local — redundant or intentional?",
+    "description": "Lines 122–123 call `ensure_gitignore_entry` twice: once for `.ai/local/` and once for `.ai/local`. Combined with the substring-match issue in finding #7, the second call will always be skipped because `.ai/local` is a substring of `.ai/local/`. Only one entry will ever be written.",
+    "suggestedFix": "Decide which entry is canonical (`.ai/local/` is the gitignore convention for directories) and keep only that one. If both are intentional, fix `file_contains_line` to use exact line matching first (finding #7).",
+    "suppressed": false
+  },
+  {
+    "id": 9,
+    "severity": "minor",
+    "confidence": "high",
+    "file": "scripts/ados_lib/git_ops.py",
+    "line": 205,
+    "title": "require_project_root runs git rev-parse without cwd — uses process CWD implicitly",
+    "description": "`git_run([\"rev-parse\", \"--show-toplevel\"], check=False)` is called without a `cwd` argument, so it uses the process's current working directory. This is correct for the intended use case (checking the CWD is a project root), but it is implicit. If `require_project_root` is ever called from a context where CWD has been changed (e.g., in tests), it may produce unexpected results.",
+    "suggestedFix": "Pass `cwd=Path.cwd()` explicitly to make the intent clear and prevent subtle test-isolation bugs.",
+    "suppressed": false
+  },
+  {
+    "id": 10,
+    "severity": "nit",
+    "confidence": "high",
+    "file": "scripts/ados_lib/git_ops.py",
+    "line": 103,
+    "title": "Stale comment references string literal condition",
+    "description": "The comment block on lines 64–68 explains the depth heuristic but is in `safety.py`, not `git_ops.py`. In `git_ops.py` line 106, the dead `before_sha_val` assignment has a comment that references the string literal condition — this is confusing and should be removed along with the dead code (finding #2).",
+    "suggestedFix": "Remove lines 106–108 as part of fixing finding #2.",
+    "suppressed": false
+  },
+  {
+    "id": 11,
+    "severity": "nit",
+    "confidence": "medium",
+    "file": "scripts/ados_lib/file_ops.py",
+    "line": 59,
+    "title": "Docstring lists 8 scenarios but function comment header says 6",
+    "description": "The docstring for `copy_file_with_diff` says 'Implements the same 6-scenario logic as the Bash copy_file_with_diff' but then lists 8 numbered scenarios (1–8). The plan (task 2.1) also says '6 copy modes'. The discrepancy is minor but could confuse maintainers.",
+    "suggestedFix": "Update the docstring to say '8-scenario logic' or consolidate scenarios 2 and 8 (symlink and new-file) into the 6 core modes with notes.",
+    "suppressed": false
+  },
+  {
+    "id": 12,
+    "severity": "nit",
+    "confidence": "high",
+    "file": "scripts/ados_lib/types.py",
+    "line": 5,
+    "title": "field imported but never used",
+    "description": "`from dataclasses import dataclass, field` — `field` is imported but no dataclass field uses `field(...)`. This is an unused import.",
+    "suggestedFix": "Remove `field` from the import: `from dataclasses import dataclass`.",
+    "suppressed": false
+  }
+]
