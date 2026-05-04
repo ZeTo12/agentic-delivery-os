@@ -4,12 +4,15 @@
 Clones the ADOS repo and runs install.py --global.  This file has NO dependency
 on ados_lib and can be piped directly from the internet:
 
-    curl -fsSL https://raw.githubusercontent.com/juliusz-cwiakalski/agentic-delivery-os/main/scripts/bootstrap.py | python3 -
+    curl -fsSL https://raw.githubusercontent.com/ZeTo12/agentic-delivery-os/main/scripts/bootstrap.py | python3 -
 
 Windows PowerShell:
-    irm https://raw.githubusercontent.com/juliusz-cwiakalski/agentic-delivery-os/main/scripts/bootstrap.py | python -
+    irm https://raw.githubusercontent.com/ZeTo12/agentic-delivery-os/main/scripts/bootstrap.py | python -
 
 Requirements: Python >= 3.8, git
+
+Note: If submitting a PR to the upstream project (juliusz-cwiakalski/agentic-delivery-os),
+revert the default ADOS_REPO_URL below and the URLs above back to the upstream repo.
 """
 from __future__ import annotations
 
@@ -28,7 +31,7 @@ def main() -> None:
 
     repo_url = os.environ.get(
         "ADOS_REPO_URL",
-        "https://github.com/juliusz-cwiakalski/agentic-delivery-os.git",
+        "https://github.com/ZeTo12/agentic-delivery-os.git",
     )
     ados_home = Path(os.environ.get("ADOS_HOME", str(Path.home() / ".ados")))
     repo_dir = Path(os.environ.get("ADOS_REPO_DIR", str(ados_home / "repo")))
